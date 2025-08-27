@@ -15,6 +15,16 @@
         "~\\.vscode\\extensions\\ketho.wow-api-0.21.0\\Annotations\\Core"
     ],
     "Lua.diagnostics.globals": [
-        "ShowUIPanel"
+        "ShowUIPanel",
+        "UIDropDownMenu_Initialize",
+        "UIDropDownMenu_SetSelectedValue",
+        "UIDropDownMenu_SetWidth",
+        "UIDropDownMenu_SetText",
+        "ColorPickerFrame",
+        "UIDropDownMenu_AddButton",
+        "UIDropDownMenu_CreateInfo",
+        "GREEN_FONT_COLOR_CODE",
+        "FONT_COLOR_CODE_CLOSE",
+        "MouseIsOver"
     ]
 }

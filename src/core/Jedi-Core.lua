@@ -3,3 +3,4 @@
 
 local ADDON_NAME = ...
 JEDI = JEDI or {}
+JEDI.db = JEDI.db or {}

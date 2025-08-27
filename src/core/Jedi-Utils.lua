@@ -1,8 +1,8 @@
 ---@diagnostic disable: undefined-global
 -- Jedi-Utils.lua: Shared utility helpers
-JEDI_DEBUG = true
 JEDI = JEDI or {}
 JEDI.Utils = {}
+JEDI_DEBUG = true
 
 function JEDI.Utils:DebugPrint(...)
     if JEDI_DEBUG then

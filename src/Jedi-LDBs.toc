@@ -1,10 +1,10 @@
 ## Interface: 100207
 ## Title: [Titan] Brakk's LDBs 
 ## Notes: Collection of Titan Panel and LDB plugins
-## Author: burntorangejedi
+## Author: burntorangejedi/brakk
 ## Version: 1.0
 ## Dependencies: Titan
-## SavedVariables: JediLDBsDB
+## SavedVariables: JEDI
 
 # Core and Shared
 core/Jedi-Utils.lua
@@ -16,6 +16,7 @@ modules/TalentSet/Locales/enUS.lua
 
 # Titan Panel Modules
 modules/TalentSet/TalentSet.lua
+modules/TalentSet/TalentSetConfigPanel.lua
 
 # DURABILITY
 # HEARTHSTONE

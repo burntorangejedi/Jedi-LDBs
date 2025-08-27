@@ -1,40 +1,68 @@
 ---@diagnostic disable: undefined-global
--- ModuleTemplate.lua: Template for new Titan Panel modules
+print("ModuleTemplate loaded")
+
+-- ModuleTemplate Titan Panel Plugin
 local ADDON_NAME = ...
-local L = _G[ADDON_NAME .. "_L"] or {}
+local L = _G[ADDON_NAME .. "_L"] or {} -- Use loaded localization table
+
+-- Titan Panel plugin name
 local PLUGIN_ID = "YourPluginID"
 
+-- Example utility function (replace or remove as needed)
+local function ExampleFunction()
+    return "Example Output"
+end
+
+-- Titan Panel plugin definition
 local plugin = {
-    id = PLUGIN_ID,
-    -- Add other required Titan fields and functions here
+    registry = {
+        id = PLUGIN_ID,
+        category = "Information",
+        version = (C_AddOns and C_AddOns.GetAddOnMetadata and C_AddOns.GetAddOnMetadata(ADDON_NAME, "Version")) or "1.0",
+        menuText = L["Module Template"] or "Module Template",
+        buttonTextFunction = function()
+            return ExampleFunction()
+        end,
+        tooltipTitle = L["Module Template"] or "Module Template",
+        tooltipTextFunction = function()
+            return (L["Tooltip"] or "Tooltip") .. ": " .. (ExampleFunction() or "Unknown")
+        end,
+        OnClick = function(self, button)
+            if button == "LeftButton" then
+                print("ModuleTemplate: Left click!")
+            end
+        end,
+        PrepareRightClickMenu = function(self)
+            TitanPanelRightClickMenu_AddTitle(L["Module Template"] or "Module Template")
+            TitanPanelRightClickMenu_AddCommand(L["Example Action"] or "Example Action", PLUGIN_ID, function()
+                print("ModuleTemplate: Example Action!")
+            end)
+        end,
+        -- Required Titan Panel plugin methods
+        GetName = function() return PLUGIN_ID end,
+        GetMenuText = function() return L["Module Template"] or "Module Template" end,
+        GetButtonText = function() return ExampleFunction() end,
+        GetTooltipText = function() return (L["Tooltip"] or "Tooltip") .. ": " .. (ExampleFunction() or "Unknown") end,
+    }
 }
 
+-- Register with Titan Panel, ensuring Titan is loaded
 local function RegisterPlugin()
-    JEDI.Utils.DebugPrint("In RegisterPlugin")
-    JEDI.Utils.DebugPrint("JEDI table in RegisterPlugin:", JEDI)
+    print("ModuleTemplate: RegisterPlugin")
     if JEDI and JEDI.TitanMixin and JEDI.TitanMixin.Register then
-        JEDI.Utils.DebugPrint("Calling JEDI.TitanMixin:Register")
-        JEDI.TitanMixin:Register(plugin)
+        print("ModuleTemplate: Calling JEDI.TitanMixin:Register(", plugin.registry, ")")
+        JEDI.TitanMixin:Register(plugin.registry)
     elseif TitanPanelButton_OnLoad then
-        JEDI.Utils.DebugPrint("Calling TitanPanelButton_OnLoad")
-        TitanPanelButton_OnLoad(plugin)
-    else
-        JEDI.Utils.DebugPrint("No registration method available")
+        print("ModuleTemplate: Fallback for Safety(", plugin.registry, ")")
+        TitanPanelButton_OnLoad(plugin.registry)
     end
 end
 
-if IsAddOnLoaded and IsAddOnLoaded("Titan") then
-    JEDI.Utils.DebugPrint("Titan is loaded, registering plugin")
+-- Register plugin on PLAYER_LOGIN for maximum reliability
+local f = CreateFrame("Frame")
+f:RegisterEvent("PLAYER_LOGIN")
+f:SetScript("OnEvent", function(self, event, ...)
+    print("ModuleTemplate: PLAYER_LOGIN event fired, registering plugin")
     RegisterPlugin()
-else
-    JEDI.Utils.DebugPrint("Titan not loaded, waiting for ADDON_LOADED")
-    local f = CreateFrame("Frame")
-    f:RegisterEvent("ADDON_LOADED")
-    f:SetScript("OnEvent", function(self, event, arg1)
-        JEDI.Utils.DebugPrint("ADDON_LOADED event:", arg1)
-        if arg1 == "Titan" then
-            RegisterPlugin()
-            self:UnregisterEvent("ADDON_LOADED")
-        end
-    end)
-end
+    self:UnregisterEvent("PLAYER_LOGIN")
+end)

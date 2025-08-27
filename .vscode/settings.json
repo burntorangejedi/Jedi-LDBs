@@ -25,6 +25,13 @@
         "UIDropDownMenu_CreateInfo",
         "GREEN_FONT_COLOR_CODE",
         "FONT_COLOR_CODE_CLOSE",
-        "MouseIsOver"
-    ]
+        "MouseIsOver",
+        "GameTimeFrame",
+        "TimeManagerClockButton",
+        "ToggleCalendar",
+        "TIME_TWENTYFOURHOURS",
+        "TIME_TWELVEHOURAM",
+        "TIME_TWELVEHOURPM"
+    ],
+    "Lua.type.weakUnionCheck": true
 }

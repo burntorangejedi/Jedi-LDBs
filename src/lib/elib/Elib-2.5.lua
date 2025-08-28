@@ -2,11 +2,11 @@
 	Description: Titan Panel Lib. Be careful editing it, all plugins can stop working.
 	Author: Eliote
 --]]
-
 local ADDON_NAME, L = ...;
 local ACE = LibStub("AceLocale-3.0"):GetLocale("Titan", true)
 
 local function defaultMenu(self, id, menus)
+	print("ELIB: defaultMenu")
 	TitanPanelRightClickMenu_AddTitle(TitanPlugins[id].menuText)
 	TitanPanelRightClickMenu_AddToggleIcon(id)
 	TitanPanelRightClickMenu_AddToggleLabelText(id)
@@ -43,6 +43,7 @@ local function defaultMenu(self, id, menus)
 end
 
 local function setDefaultSavedVariables(sv, menus)
+	print("ELIB: setDefaultSavedVariables")
 	sv.ShowIcon = sv.ShowIcon or 1
 	sv.ShowLabelText = sv.ShowLabelText or false
 
@@ -57,6 +58,7 @@ end
 
 -- Using the private table to register the lib
 function L.Elib(easyObject)
+	print("ELIB: L.Elib")
 	local elap = 0
 
 	-- Main button frame and addon base
@@ -77,6 +79,7 @@ function L.Elib(easyObject)
 	end
 
 	function frame:ADDON_LOADED(a1)
+		print("ELIB: frame:ADDON_LOADED", a1)
 		if a1 ~= ADDON_NAME then
 			return
 		end
@@ -134,5 +137,8 @@ function L.Elib(easyObject)
 		end
 	end
 
-	return frame
-end
+
+		return frame
+	end
+
+	_G.Elib = L.Elib

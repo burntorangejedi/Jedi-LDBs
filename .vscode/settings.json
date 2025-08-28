@@ -31,7 +31,24 @@
         "ToggleCalendar",
         "TIME_TWENTYFOURHOURS",
         "TIME_TWELVEHOURAM",
-        "TIME_TWELVEHOURPM"
+        "TIME_TWELVEHOURPM",
+        "SettingsPanel",
+        "Settings",
+        "IsSecureCmd",
+        "SetDesaturation",
+        "CLOSE",
+        "SlashCmdList",
+        "SELECTED_CHAT_FRAME",
+        "NOT_BOUND",
+        "NORMAL_FONT_COLOR_CODE",
+        "hash_SlashCmdList",
+        "DEFAULT_CHAT_FRAME",
+        "ACCEPT",
+        "CANCEL",
+        "OKAY",
+        "NUM_CHAT_WINDOWS",
+        "ChatEdit_GetActiveWindow",
+        "ReloadUI"
     ],
     "Lua.type.weakUnionCheck": true
 }

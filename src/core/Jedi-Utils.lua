@@ -5,9 +5,9 @@ JEDI.Utils = {}
 JEDI_DEBUG = true
 
 function JEDI.Utils:DebugPrint(...)
-    if JEDI_DEBUG then
+    --if JEDI_DEBUG then
         print("JEDI:", ...)
-    end
+    --end
 end
 function JEDI.Utils:ShallowCopy(tbl)
     local t = {}

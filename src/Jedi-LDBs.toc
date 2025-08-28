@@ -1,15 +1,30 @@
 ## Interface: 100207
-## Title: [Titan] Brakk's LDBs 
+## Title: Titan Panel [Brakk's LDBs] 
 ## Notes: Collection of Titan Panel and LDB plugins
 ## Author: burntorangejedi/brakk
 ## Version: 1.0
 ## Dependencies: Titan
 ## SavedVariables: JEDI
+## X-Embeds: Ace3
 
 # Core and Shared
 core/Jedi-Utils.lua
 core/Jedi-TitanMixin.lua
 core/Jedi-Core.lua
+
+# Libraries
+lib/elib/Elib-2.5.lua
+
+# Ace3 Core (embedded)
+lib/Ace3/CallbackHandler-1.0/CallbackHandler-1.0.lua
+lib/Ace3/AceEvent-3.0/AceEvent-3.0.lua
+lib/Ace3/AceConsole-3.0/AceConsole-3.0.lua
+lib/Ace3/AceGUI-3.0/AceGUI-3.0.lua
+lib/Ace3/AceConfig-3.0/AceConfig-3.0.lua
+lib/Ace3/AceConfig-3.0/AceConfigRegistry-3.0/AceConfigRegistry-3.0.lua
+lib/Ace3/AceConfig-3.0/AceConfigDialog-3.0/AceConfigDialog-3.0.lua
+lib/Ace3/AceConfig-3.0/AceConfigCmd-3.0/AceConfigCmd-3.0.lua
+lib/Ace3/AceLocale-3.0/AceLocale-3.0.lua
 
 # Localization (English default)
 modules/TalentSet/Locales/enUS.lua

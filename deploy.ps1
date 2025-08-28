@@ -1,3 +1,5 @@
+Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+
 # Deploy Jedi-LDBs addon to WoW AddOns folder
 $ErrorActionPreference = 'Stop'
 

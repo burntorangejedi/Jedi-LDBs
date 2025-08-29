@@ -2,7 +2,11 @@
 JEDI = JEDI or {}
 JEDI.TitanMixin = {}
 
-if JEDI and JEDI.Debug then JEDI.Debug.Info("JEDI.TitanMixin running") end
+if JEDI and JEDI.Utils and type(JEDI.Utils.Info) == "function" then
+    JEDI.Utils.Info("JEDI.TitanMixin running")
+else
+    print("JEDI.TitanMixin running")
+end
 
 -- Helper to register a Titan Panel plugin
 function JEDI.TitanMixin:Register(plugin)

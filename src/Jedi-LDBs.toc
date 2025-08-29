@@ -4,10 +4,11 @@
 ## Author: burntorangejedi/brakk
 ## Version: 1.0
 ## Dependencies: Titan
-## SavedVariables: JEDI
+## SavedVariables: JEDI_DB
 ## X-Embeds: Ace3
 
 # Core and Shared
+core/Jedi-Debug.lua
 core/Jedi-Utils.lua
 core/Jedi-TitanMixin.lua
 core/Jedi-Core.lua
@@ -26,14 +27,14 @@ lib/Ace3/AceConfig-3.0/AceConfigCmd-3.0/AceConfigCmd-3.0.lua
 lib/Ace3/AceLocale-3.0/AceLocale-3.0.lua
 
 # Localization (English default)
-modules/TalentSet/Locales/enUS.lua
 
 # Titan Panel Modules
-modules/TalentSet/TalentSet.lua
-#modules/TalentSet/TalentSetConfigPanel.lua
 
 # HEARTHSTONE
+modules/Hearthstone/Hearthstone.lua
+
 # DURABILITY
 # LEVEL
 # ITEM LEVEL
 # CLOCK
+# TALENTS

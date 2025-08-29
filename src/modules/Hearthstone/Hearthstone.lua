@@ -2,8 +2,13 @@ local ADDON_NAME = ...
 local L = _G[ADDON_NAME .. "_L"] or {}
 JEDI = JEDI or {}
 JEDI.Utils = JEDI.Utils or {}
+JEDI.Hearth = JEDI.Hearth or {}
 
-if JEDI and JEDI.Debug then JEDI.Debug.Info("Hearthstone module loading") end
+if JEDI and JEDI.Utils and type(JEDI.Utils.Info) == "function" then
+    JEDI.Utils.Info("Hearthstone module loading")
+else
+    print("Hearthstone module loading")
+end
 
 local function GetHearthLocationName()
     -- GetBindLocation returns the inn/zone name where the character's hearth is set
@@ -37,7 +42,7 @@ local function GetHearthstones()
                     -- Examine returned varargs for names or spell IDs
                     local nameFound
                     local toySpellId
-                    for _, v in ipairs({a, b, c, d, e}) do
+                    for _, v in ipairs({ a, b, c, d, e }) do
                         if type(v) == "string" and not nameFound then nameFound = v end
                         if type(v) == "number" and not toySpellId then toySpellId = v end
                     end
@@ -125,14 +130,21 @@ local function TitanPanelJediHearthButton_OnClick(self, ...)
     local button
     for i = 1, select('#', ...) do
         local v = select(i, ...)
-        if type(v) == 'string' then button = v; break end
+        if type(v) == 'string' then
+            button = v; break
+        end
     end
     if not button then button = select(1, ...) end
 
     if JEDI and JEDI.Debug then JEDI.Debug.Debug("Hearth OnClick:", tostring(button)) end
 
     if button == "LeftButton" then
-        -- Try opening the world map so user can see the hearth location roughly
+        -- Left-click: attempt to use a random hearth toy (teleport to bound hearth)
+        if JEDI and JEDI.Debug then JEDI.Debug.Info("Attempting to use random hearth toy (left-click)") end
+        UseRandomHearthstone()
+        return
+    elseif button == "RightButton" then
+        -- Right-click: open the world map so user can see the hearth location roughly
         if type(ToggleWorldMap) == "function" then
             pcall(ToggleWorldMap)
         elseif _G.WorldMapFrame and type(ShowUIPanel) == "function" then
@@ -141,11 +153,6 @@ local function TitanPanelJediHearthButton_OnClick(self, ...)
             if JEDI and JEDI.Debug then JEDI.Debug.Info("No world map API available to open") end
         end
         return
-    elseif button == "RightButton" then
-    -- Right-click: attempt to use a random hearth toy
-    if JEDI and JEDI.Debug then JEDI.Debug.Info("Attempting to use random hearth toy") end
-    UseRandomHearthstone()
-    return
     end
 end
 
@@ -171,30 +178,81 @@ local function UpdateHearthButton()
     end
 end
 
-local frame = CreateFrame("Button", "TitanPanelJedi_HearthstoneButton", UIParent, "TitanPanelComboTemplate")
-frame.registry = plugin
-frame:EnableMouse(true)
-frame:RegisterForClicks("AnyUp")
+-- Save bind location to saved-vars
+local function SaveBindLocation(loc)
+    JEDI = JEDI or {}
+    -- Ensure saved DB exists; Jedi-Core.InitSavedVars should have run, but be defensive
+    if not JEDI.db or type(JEDI.db) ~= "table" then
+        _G.JEDI_DB = _G.JEDI_DB or {}
+        JEDI.db = _G.JEDI_DB
+    end
+    JEDI.db.profile = JEDI.db.profile or {}
+    JEDI.db.profile.hearth = JEDI.db.profile.hearth or {}
+    JEDI.db.profile.hearth.bindLocation = loc
+end
 
-frame:SetScript("OnEvent", function(self, event, ...)
-    if event == "PLAYER_LOGIN" or event == "PLAYER_ENTERING_WORLD" or event == "ZONE_CHANGED_NEW_AREA" then
-        if JEDI and JEDI.Debug then JEDI.Debug.Debug("Hearth event fired:", event) end
+-- Check current bind and update saved value + UI when it changes
+local lastBind = nil
+local function CheckBind()
+    local ok, loc = pcall(GetBindLocation)
+    loc = (ok and loc and loc ~= "") and loc or nil
+    if loc ~= lastBind then
+        lastBind = loc
+        if JEDI and JEDI.Utils and type(JEDI.Utils.Info) == "function" then
+            JEDI.Utils.Info("Hearth bind changed to:", tostring(loc))
+        else
+            print("Hearth bind changed to:", tostring(loc))
+        end
+        SaveBindLocation(loc)
         UpdateHearthButton()
     end
-end)
+end
 
-frame:RegisterEvent("PLAYER_LOGIN")
-frame:RegisterEvent("PLAYER_ENTERING_WORLD")
-frame:RegisterEvent("ZONE_CHANGED_NEW_AREA")
+local frame = _G["TitanPanelJedi_HearthstoneButton"]
+if not frame then
+    frame = CreateFrame("Button", "TitanPanelJedi_HearthstoneButton", UIParent, "TitanPanelComboTemplate")
+end
 
--- If Titan is already loaded, try to let it hook our frame now
-if type(_G.TitanPanelButton_OnLoad) == "function" then
-    pcall(_G.TitanPanelButton_OnLoad, frame)
+-- Avoid re-initializing if we've already set this up
+if not frame._JediHearthInitialized then
+    frame.registry = plugin
+    frame:EnableMouse(true)
+    frame:RegisterForClicks("AnyUp")
+
+    -- Prefer AceEvent-3.0 when embedded; fallback to frame events
+    local AceEvent = LibStub and LibStub("AceEvent-3.0", true)
+    if AceEvent then
+        local ace = {}
+        AceEvent:Embed(ace)
+        ace:RegisterEvent("PLAYER_LOGIN", CheckBind)
+        ace:RegisterEvent("PLAYER_ENTERING_WORLD", CheckBind)
+        ace:RegisterEvent("ZONE_CHANGED_NEW_AREA", CheckBind)
+        ace:RegisterEvent("GOSSIP_SHOW", function() C_Timer.After(0.2, CheckBind) end)
+    else
+        frame:SetScript("OnEvent", function(self, event, ...)
+            if event == "PLAYER_LOGIN" or event == "PLAYER_ENTERING_WORLD" or event == "ZONE_CHANGED_NEW_AREA" then
+                CheckBind()
+            elseif event == "GOSSIP_SHOW" then
+                C_Timer.After(0.2, CheckBind)
+            end
+        end)
+        frame:RegisterEvent("PLAYER_LOGIN")
+        frame:RegisterEvent("PLAYER_ENTERING_WORLD")
+        frame:RegisterEvent("ZONE_CHANGED_NEW_AREA")
+        frame:RegisterEvent("GOSSIP_SHOW")
+    end
+
+    -- Initial check after a short delay to allow APIs to be ready
+    if C_Timer and C_Timer.After then
+        C_Timer.After(0.25, CheckBind)
+    else
+        CheckBind()
+    end
+
+    frame._JediHearthInitialized = true
 end
 
 -- Export for potential use
-JEDI = JEDI or {}
-JEDI.Hearth = JEDI.Hearth or {}
 JEDI.Hearth.GetLocation = GetHearthLocationName
 JEDI.Hearth.GetHearthstones = GetHearthstones
 JEDI.Hearth.UseRandomHearthstone = UseRandomHearthstone

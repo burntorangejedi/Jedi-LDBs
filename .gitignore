@@ -39,3 +39,6 @@ luac.out
 *.x86_64
 *.hex
 
+# Ignore ElvUI ToxiUI third-party module
+ElvUI_ToxiUI/
+

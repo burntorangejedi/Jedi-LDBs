@@ -1,19 +1,19 @@
-
--- Ace3 config panel for TalentSet
-local AceConfig = LibStub("AceConfig-3.0")
-local AceConfigDialog = LibStub("AceConfigDialog-3.0")
-
+-- Ace3 config panel for Jedi-TalentSet
 JEDI = JEDI or {}
 JEDI.db = JEDI.db or {}
 JEDI.db.TalentSet = JEDI.db.TalentSet or {
     font = "GameFontNormal",
     color = { r = 1, g = 1, b = 1 },
 }
+if JEDI and JEDI.Debug then JEDI.Debug.Info("TalentSet config running") end
+
+local AceConfig = LibStub("AceConfig-3.0")
+local AceConfigDialog = LibStub("AceConfigDialog-3.0")
 
 local fonts = { "GameFontNormal", "GameFontHighlight", "GameFontDisable", "GameFontGreen" }
 
 local options = {
-    name = "TalentSet Options",
+    name = "Jedi-TalentSet Options",
     type = "group",
     args = {
         font = {
@@ -45,5 +45,5 @@ local options = {
     },
 }
 
-AceConfig:RegisterOptionsTable("TalentSet", options)
-AceConfigDialog:AddToBlizOptions("TalentSet", "TalentSet")
+AceConfig:RegisterOptionsTable("Jedi-TalentSet", options)
+AceConfigDialog:AddToBlizOptions("Jedi-TalentSet", "Jedi-TalentSet")

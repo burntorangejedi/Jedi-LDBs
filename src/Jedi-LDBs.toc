@@ -13,7 +13,6 @@ core/Jedi-TitanMixin.lua
 core/Jedi-Core.lua
 
 # Libraries
-lib/elib/Elib-2.5.lua
 
 # Ace3 Core (embedded)
 lib/Ace3/CallbackHandler-1.0/CallbackHandler-1.0.lua
@@ -31,10 +30,10 @@ modules/TalentSet/Locales/enUS.lua
 
 # Titan Panel Modules
 modules/TalentSet/TalentSet.lua
-modules/TalentSet/TalentSetConfigPanel.lua
+#modules/TalentSet/TalentSetConfigPanel.lua
 
-# DURABILITY
 # HEARTHSTONE
+# DURABILITY
 # LEVEL
 # ITEM LEVEL
 # CLOCK

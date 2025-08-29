@@ -1,7 +1,8 @@
----@diagnostic disable: undefined-global
 -- Jedi-TitanMixin.lua: Shared Titan Panel plugin helpers
 JEDI = JEDI or {}
 JEDI.TitanMixin = {}
+
+if JEDI and JEDI.Debug then JEDI.Debug.Info("JEDI.TitanMixin running") end
 
 -- Helper to register a Titan Panel plugin
 function JEDI.TitanMixin:Register(plugin)
